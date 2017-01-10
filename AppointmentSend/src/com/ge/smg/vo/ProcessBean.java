@@ -5,6 +5,7 @@ import com.ge.util.StringHelper;
 import com.ge.util.os.ResultParser;
 import com.ge.util.os.ShellUtils;
 
+import java.io.File;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class ProcessBean {
     public static ProcessInfo getProcess() {
         ServerConfig config = ServerConfig.getInstance();
         String cmd = config.getValue("Process", "SearchCmd");
-        List<ProcessInfo> processList = ShellUtils.execute(cmd, ProcessBean.resultParser);
+        String dir = config.getValue("Process", "Dir");
+        List<ProcessInfo> processList = ShellUtils.execute(cmd, new File(dir), ProcessBean.resultParser);
         if (processList.isEmpty()) {
             return null;
         }
@@ -46,12 +48,15 @@ public class ProcessBean {
 	public static void startSend(String actionCode) {
         ServerConfig config = ServerConfig.getInstance();
         String cmd = config.getValue("Process", "StartCmd");
-		cmd = "nohup " + cmd + " " + actionCode + ",&";
-        ShellUtils.execute(cmd, ProcessBean.resultParser);
+        String dir = config.getValue("Process", "Dir");
+		cmd = cmd + " " + actionCode;
+        System.out.println(cmd);
+        ShellUtils.execute(cmd, new File(dir), ProcessBean.resultParser);
 	}
 
 	public static void killProcess(ProcessInfo info) {
 		String cmd = "kill -9 " + info.pid;
-		ShellUtils.execute(cmd);
+        System.out.println(cmd);
+        ShellUtils.execute(cmd);
 	}
 }
