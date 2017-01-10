@@ -17,6 +17,11 @@ public class KillNode implements HandleNode {
 		if (appointmentItem == null || processInfo == null) {
 			return false;
 		}
+
+		if (appointmentItem.endTime == null) {
+            return false;
+        }
+
 		if (appointmentItem.endTime.isAfter(LocalDateTime.now())) {
 			return false;
 		}

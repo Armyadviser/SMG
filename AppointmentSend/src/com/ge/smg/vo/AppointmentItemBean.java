@@ -40,8 +40,11 @@ public class AppointmentItemBean {
 			return null;
 		};
 
-	public static ObjectMapper<AppointmentItem> objectMapper() {
-		return appointmentItem ->
+	public static boolean save(AppointmentItem appointmentItem) {
+		return DBUtil.insert(appointmentItem, objectMapper) == 1;
+	}
+
+	public static final ObjectMapper<AppointmentItem> objectMapper = appointmentItem ->
 				"insert into smg_appointment_send (create_t, send_t, start_t, end_t, action_code, sign) " +
 			"values ('" + DateTimeHelper.toSimpleString(appointmentItem.createTime) + "', " +
 			"'" + DateTimeHelper.toSimpleString(appointmentItem.sendTime) + "', " +
@@ -49,13 +52,12 @@ public class AppointmentItemBean {
 			"'" + DateTimeHelper.toSimpleString(appointmentItem.endTime) + "', " +
 			"'" + appointmentItem.actionCode + "', " +
 			appointmentItem.sign + ")";
-	}
 
 	public static void startSend(AppointmentItem item) {
 		String sql = "update smg_appointment_send " +
 			"set sign=1, " +
 			"start_t='" + DateTimeHelper.toSimpleString(LocalDateTime.now()) + "' " +
-			"where action_code='" + item.id + "'";
+			"where Id='" + item.id + "'";
 		DBUtil.update(sql);
 	}
 
@@ -63,7 +65,7 @@ public class AppointmentItemBean {
 		String sql = "update smg_appointment_send " +
 			"set sign=2, " +
 			"finish_t='" + DateTimeHelper.toSimpleString(LocalDateTime.now()) + "' " +
-			"where action_code='" + item.id + "'";
+			"where Id='" + item.id + "'";
 		DBUtil.update(sql);
 	}
 }

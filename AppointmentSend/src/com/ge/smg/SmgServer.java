@@ -26,7 +26,7 @@ public class SmgServer extends Thread {
 		chainManager.addHandleNode(new RejectNode());
 		chainManager.addHandleNode(new StartAndUpdateSignNode());
         chainManager.addHandleNode(new KillNode());
-        chainManager.addHandleNode(new RestartAndUpdateSignNode());
+//        chainManager.addHandleNode(new RestartAndUpdateSignNode());
         chainManager.addHandleNode(new FinishNode());
 		chainManager.addHandleNode(new LastNode());
 	}
