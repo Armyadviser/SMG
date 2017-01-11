@@ -23,7 +23,7 @@ public class ServerConfig {
         }
     }
 
-    public static ServerConfig getInstance() {
+    public static synchronized ServerConfig getInstance() {
         if (instance == null) {
             instance = new ServerConfig();
         }
